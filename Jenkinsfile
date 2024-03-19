@@ -10,7 +10,7 @@ pipeline {
         SCANNER_HOME = tool 'sonar-scanner'
         APP_NAME = "reddit-clone-app"
         RELEASE = "1.0.0"
-        DOCKER_USER = "philcappalot" // Corrected variable name
+        DOCKER_USER = "philcappalot"
         IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
     }
@@ -38,8 +38,11 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarQube-Server') {
                     sh "$SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectKey=reddit-clone-CI \
                         -Dsonar.projectName=Reddit-Clone-CI \
-                        -Dsonar.projectKey=reddit-clone-CI"
+                        -Dsonar.sources=src \
+                        -Dsonar.language=javascript \
+                        -Dsonar.sourceEncoding=UTF-8"
                 }
             }
         }
